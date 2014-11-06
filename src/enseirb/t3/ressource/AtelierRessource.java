@@ -21,7 +21,11 @@ import com.google.code.morphia.query.UpdateOperations;
 import enseirb.t3.entity.Atelier;
 
 /**
+<<<<<<< HEAD
  * @author catdiop, cchauvalon, ezogbo
+=======
+ * @author catdiop , ezogbo, cchauvalon
+>>>>>>> 0e4a2d8fcaf947e7af3a08f26575feb9b1fa5d51
  *
  */
 @Path("ateliers")
