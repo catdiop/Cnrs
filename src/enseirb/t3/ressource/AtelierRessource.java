@@ -18,7 +18,7 @@ import com.google.code.morphia.query.Query;
 import enseirb.t3.entity.Atelier;
 
 /**
- * @author catdiop
+ * @author catdiop , ezogbo, cchauvalon
  *
  */
 @Path("ateliers")
