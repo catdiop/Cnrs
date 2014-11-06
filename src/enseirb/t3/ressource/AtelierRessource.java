@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -14,11 +16,12 @@ import javax.ws.rs.core.MediaType;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.query.Query;
+import com.google.code.morphia.query.UpdateOperations;
 
 import enseirb.t3.entity.Atelier;
 
 /**
- * @author catdiop
+ * @author catdiop, cchauvalon, ezogbo
  *
  */
 @Path("ateliers")
@@ -51,4 +54,31 @@ public class AtelierRessource {
 		
 		return ateliers;
 	}
+	
+	
+	@DELETE
+	public void delete(@QueryParam("id") String id){
+		Datastore ds=ConnectToDatabase.connect();
+		Query<Atelier> atelier=ds.createQuery(Atelier.class).field("id").equal(id);
+		ds.delete(atelier);
+	}
+	
+	@PUT
+	public void modify(@QueryParam("id") String id, @QueryParam("title") String title, @QueryParam("theme") String theme,
+			@QueryParam("labo") String labo, @QueryParam("address") String address,
+			@QueryParam("city") String city, @QueryParam("cp") String cpString) {
+		
+		Datastore ds=ConnectToDatabase.connect();
+		Query<Atelier> query=ds.createQuery(Atelier.class).field("id").equal(id);
+		
+		UpdateOperations<Atelier> ops = ds.createUpdateOperations(Atelier.class).set("title", title);
+		ds.update(query, ops);
+		
+		ds.update(query, ops);
+	}
+	
+	
+	
+	
 }
+
