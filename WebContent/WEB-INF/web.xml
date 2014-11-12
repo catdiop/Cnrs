@@ -17,4 +17,14 @@
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+    	<servlet-name>AtelierServlet</servlet-name>
+    	<servlet-class>enseirb.t3.ressource.AtelierServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+    	<servlet-name>AtelierServlet</servlet-name>
+    	<url-pattern>/atelier</url-pattern>
+    </servlet-mapping>
 </web-app>

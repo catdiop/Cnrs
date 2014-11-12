@@ -77,10 +77,6 @@ public class AtelierRessource {
 		UpdateOperations<Atelier> ops = ds.createUpdateOperations(Atelier.class).set("title", title);
 		ds.update(query, ops);
 		System.out.println("modify");
-	}
-	
-	
-	
-	
+	}	
 }
 
