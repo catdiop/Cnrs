@@ -1,13 +1,10 @@
-/**
- * 
- */
 package enseirb.t3.ressource;
 
 import java.util.List;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -30,7 +27,6 @@ import enseirb.t3.entity.Atelier;
  */
 @Path("ateliers")
 public class AtelierRessource {
-
 	@POST
 	public void create(@QueryParam("title") String title, @QueryParam("theme") String theme,
 			@QueryParam("labo") String labo, @QueryParam("address") String address,
@@ -46,6 +42,8 @@ public class AtelierRessource {
 		
 		Datastore ds=ConnectToDatabase.connect();
 		ds.save(a);
+		System.out.println("POST");
+		System.out.println("Labo :" + labo);
 	}
 	
 	@GET
@@ -55,7 +53,7 @@ public class AtelierRessource {
 				
 		Query<Atelier> q=ds.createQuery(Atelier.class);
 		List<Atelier> ateliers=q.asList();
-		
+		System.out.println("GET");
 		return ateliers;
 	}
 	
@@ -65,6 +63,7 @@ public class AtelierRessource {
 		Datastore ds=ConnectToDatabase.connect();
 		Query<Atelier> atelier=ds.createQuery(Atelier.class).field("id").equal(id);
 		ds.delete(atelier);
+		System.out.println("DELETE");
 	}
 	
 	@PUT
@@ -77,8 +76,7 @@ public class AtelierRessource {
 		
 		UpdateOperations<Atelier> ops = ds.createUpdateOperations(Atelier.class).set("title", title);
 		ds.update(query, ops);
-		
-		ds.update(query, ops);
+		System.out.println("modify");
 	}
 	
 	

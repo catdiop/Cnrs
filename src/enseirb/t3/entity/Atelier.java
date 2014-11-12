@@ -4,7 +4,7 @@
 package enseirb.t3.entity;
 
 import com.google.code.morphia.annotations.Id;
-import com.sun.corba.se.spi.ior.ObjectId;
+import org.bson.types.ObjectId;
 
 /**
  * @author catdiop
