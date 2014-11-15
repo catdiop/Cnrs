@@ -13,7 +13,7 @@ import com.mongodb.ServerAddress;
 
 import enseirb.t3.entity.Atelier;
 
-public class ConnectToDatabase<T> {
+public class ConnectToDatabase {
 		private static String databaseName="myDb";
 		
 	public static Datastore connect() {
