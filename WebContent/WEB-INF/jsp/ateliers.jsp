@@ -15,10 +15,10 @@
     <title>About - Business Casual - Start Bootstrap Theme</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="../../css/business-casual.css" rel="stylesheet">
+    <link href="css/business-casual.css" rel="stylesheet">
 
     <!-- Fonts -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -35,8 +35,8 @@
 
 <body>
 
-    <div class="brand">Business Casual</div>
-    <div class="address-bar">3481 Melrose Place | Beverly Hills, CA 90210 | 123.456.7890</div>
+    <div class="brand">CNRS</div>
+    <div class="address-bar">146 Rue Léo Saignat 33000 Bordeaux</div>
 
     <!-- Navigation -->
         <nav class="navbar navbar-default" role="navigation">
@@ -58,11 +58,11 @@
                     <li>
                         <a href="index.html">Home</a>
                     </li>
-                    <li>
-                        <a href="ateliers.html">Ateliers</a>
+                    <li class="active">
+                        <a href="#">Ateliers</a>
                     </li>
                      <li>
-                        <a href="ajout.html">Ajouter un Atelier</a>
+                        <a href="/Cnrs/atelier">Ajouter un Atelier</a>
                     </li>
                 </ul>
             </div>
@@ -77,16 +77,22 @@
     
         <div class="row">
             <div class="box">
-                <div class="col-lg-12">
-                    <hr>
-                    <h2 class="intro-text text-center">About
+                <div>
+                    <h2 class="text-left">
                         <strong><c:out value="${atelier.title}"/></strong>
                     </h2>
-                    <hr>
                 </div>
-                <div class="col-md-6 text-center">
+                <div>
                     <p><c:out value="${atelier.theme}"/></p>
                 </div>
+                <br>
+                <div class="row" style="padding : 5px">
+                 <button type="button" class="btn btn-default">
+                 <span class="glyphicon glyphicon-pencil"></span>  Modifier</button>
+                 <button type="button" class="btn btn-primary">
+                 <span class="glyphicon glyphicon-eye-open"></span>  Voir</button>
+                </div> 
+                 
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -99,17 +105,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; Cnrs</p>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- jQuery Version 1.11.0 -->
-    <script src="../../js/jquery-1.11.0.js"></script>
+    <script src="js/jquery-1.11.0.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="../../js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
 </body>
 

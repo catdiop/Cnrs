@@ -42,8 +42,6 @@ public class AtelierRessource {
 		
 		Datastore ds=ConnectToDatabase.connect();
 		ds.save(a);
-		System.out.println("POST");
-		System.out.println("Labo :" + labo);
 	}
 	
 	@GET
@@ -53,7 +51,6 @@ public class AtelierRessource {
 				
 		Query<Atelier> q=ds.createQuery(Atelier.class);
 		List<Atelier> ateliers=q.asList();
-		System.out.println("GET");
 		return ateliers;
 	}
 	
@@ -63,7 +60,6 @@ public class AtelierRessource {
 		Datastore ds=ConnectToDatabase.connect();
 		Query<Atelier> atelier=ds.createQuery(Atelier.class).field("id").equal(id);
 		ds.delete(atelier);
-		System.out.println("DELETE");
 	}
 	
 	@PUT
@@ -76,7 +72,6 @@ public class AtelierRessource {
 		
 		UpdateOperations<Atelier> ops = ds.createUpdateOperations(Atelier.class).set("title", title);
 		ds.update(query, ops);
-		System.out.println("modify");
 	}	
 }
 
