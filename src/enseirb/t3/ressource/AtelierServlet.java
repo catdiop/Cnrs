@@ -55,6 +55,7 @@ public class AtelierServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Atelier atelier=null;
+		String voir=req.getParameter("voir");
 		idString=req.getParameter("idString");
 		initThemes();
 		if(idString==null){
@@ -63,10 +64,15 @@ public class AtelierServlet extends HttpServlet {
 		else{
 			Datastore ds=ConnectToDatabase.connect();
 			atelier=ds.get(Atelier.class, new ObjectId(idString));
+			
 		}
 		req.setAttribute("atelier", atelier);
 		req.setAttribute("themes", this.themes);
-		this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ajout.jsp").forward(req, resp);
+		if( voir==null)
+			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ajout.jsp").forward(req, resp);
+		else
+			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ateliers1.jsp").forward(req, resp);
+
 	}
 
 	@Override
