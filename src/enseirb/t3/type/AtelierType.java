@@ -8,16 +8,25 @@ package enseirb.t3.type;
  *
  */
 public enum AtelierType {
-	MATHS,
-	PHYSIQUE,
-    CHIMIE,
-    SCIENCEVIE,
-    SCIENCETERRE,
-    SCIENCENUMERIQUE,
-    TECHNOLOGIE,
-    HISTOIRE,
-    PHILOSOPHIE,
-    ECONOMIE,
-    ASTRONOMIE,
-    GEOGRAPHIE
+	MATHS("Mathématiques"),
+	PHYSIQUE("Physiques"),
+    CHIMIE("Chimie"),
+    SCIENCEVIE("Science de la vie"),
+    SCIENCETERRE("Science de la terre"),
+    SCIENCENUMERIQUE("Science numérique"),
+    TECHNOLOGIE("Tecnhologie"),
+    HISTOIRE("Histoire"),
+    PHILOSOPHIE("Phylosophie"),
+    ECONOMIE("Economie"),
+    ASTRONOMIE("Astronomie"),
+    GEOGRAPHIE("Géographie");
+	
+	private String str;
+	private AtelierType(String str) {
+		this.str=str;
+	}
+	
+	public String getString() {
+		return this.str;
+	}
 }

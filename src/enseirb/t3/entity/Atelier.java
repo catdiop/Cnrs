@@ -3,8 +3,14 @@
  */
 package enseirb.t3.entity;
 
-import com.google.code.morphia.annotations.Id;
+import java.util.Date;
+
+import javax.persistence.Lob;
+
 import org.bson.types.ObjectId;
+
+import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Transient;
 
 /**
  * @author catdiop
@@ -15,9 +21,13 @@ public class Atelier {
 	private String title;
 	private String theme;
 	private String labo;
+	private String description;
 	private String address;
 	private int cp;
 	private String city;
+	private Date date;
+	@Transient private String idString;
+	
 	public ObjectId getId() {
 		return id;
 	}
@@ -59,5 +69,27 @@ public class Atelier {
 	}
 	public void setCity(String city) {
 		this.city = city;
+	}
+	@Lob
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public String getIdString() {
+		if(id==null)
+		return null;
+		else
+			return id.toHexString();
+	}
+	public void setIdString(String str) {
+		this.idString = str;
 	}
 }
