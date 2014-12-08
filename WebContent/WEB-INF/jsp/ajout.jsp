@@ -74,7 +74,7 @@
 				<ul class="nav navbar-nav">
 					<li><a href="index.html">Home</a></li>
 					<li><a href="/Cnrs/ateliers">Ateliers</a></li>
-					<li class="active"><a href="#">Ajouter un Atelier</a></li>
+					<li class="active"><a href="/Cnrs/atelier">Ajouter un Atelier</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -85,8 +85,7 @@
 	<div class="container">
 
 		<%-- Formulaire d'ajout --%>
-		<form role="form" action="/Cnrs/atelier" method="${empty atelier.idString ? 'POST' : 'PUT'}">
-			<span>${atelier.idString}</span>
+		<form role="form" action="/Cnrs/atelier" method="POST">
 			<input type="hidden" value="${idString}" />
 			<div class="form-group">
 				<label for="date">Date</label> <span class="text-danger">*</span>
@@ -130,7 +129,7 @@
 				<input name="labo" value="<c:out value="${atelier.labo}"/>"
 					type="text" class="form-control" id="labo"
 					placeholder="Laboratoire"> <span class="text-danger"><c:out
-						value="${erreurs['erreurDescription']}" /></span>
+						value="${erreurs['erreurLabo']}" /></span>
 			</div>
 
 			<div class="form-group">
@@ -158,7 +157,7 @@
 			<div class="form-group">
 				<label for="description">Description</label>
 				<textarea name="description" rows="5"
-					class="form-control placeholder="Description"></textarea>
+					class="form-control placeholder="Description" value="<c:out value="${atelier.description}"/>"></textarea>
 				<br> <span class="text-danger"><c:out
 						value="${erreurs['erreurDescription']}" /></span>
 			</div>

@@ -72,8 +72,35 @@ public class AtelierServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
+		
+		String title=null;
+		String labo=null;
+		String description=null;
+		String address=null;
+		String city=null;
+		String cp=null;
+		String dateString=null; 
+		String theme=null;
+		Date date=null;
+		
+		Datastore ds=ConnectToDatabase.connect();
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/mm/yyyy");
+		
 		erreurs=validation(req);
+		if(erreurs.isEmpty()){
+			title=getValeur(req, "title");
+			labo=getValeur(req, "labo");
+			description=getValeur(req, "description");
+			address=getValeur(req, "address");
+			city=getValeur(req, "city");
+			cp=getValeur(req, "cp");
+			dateString=getValeur(req, "date"); 
+			theme=getValeur(req, "theme");
+			try{
+				date=sdf.parse(dateString);
+			}catch(ParseException e){}
+		}
+		
 		if(!erreurs.isEmpty()) {
 			Atelier atelier=new Atelier();
 			req.setAttribute("atelier", atelier);
@@ -81,19 +108,8 @@ public class AtelierServlet extends HttpServlet {
 			req.setAttribute("erreurs", erreurs);	
 			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ajout.jsp").forward(req, resp);
 		}
-		else{
-			String title=getValeur(req, "title");
-			String labo=getValeur(req, "labo");
-			String description=getValeur(req, "description");
-			String address=getValeur(req, "address");
-			String city=getValeur(req, "city");
-			String cp=getValeur(req, "cp");
-			String dateString=getValeur(req, "date"); 
-			String theme=getValeur(req, "theme");
-			Date date=null;
-
-			SimpleDateFormat sdf=new SimpleDateFormat("dd/mm/yyyy");
-
+		
+		else if(getValeur(req, "idString")==null){
 			Atelier atelier=new Atelier();
 			atelier.setTitle(title);
 			atelier.setLabo(labo);
@@ -102,14 +118,23 @@ public class AtelierServlet extends HttpServlet {
 			atelier.setCity(city);
 			atelier.setCp(Integer.parseInt(cp));
 			atelier.setTheme(theme);
-
-			try{
-				date=sdf.parse(dateString);
-			}catch(ParseException e){}
 			atelier.setDate(date);
-
-			Datastore ds=ConnectToDatabase.connect();
+			
 			ds.save(atelier);
+		}else{
+			Query<Atelier> query=ds.createQuery(Atelier.class).field("id").equal(new ObjectId(idString));
+
+			UpdateOperations<Atelier> ops = ds.createUpdateOperations(Atelier.class)
+					.set("title", getValeur(req, "title"))
+					.set("theme", getValeur(req, "theme"))
+					.set("labo", getValeur(req, "labo"))
+					.set("description", getValeur(req, "description"))
+					.set("address", getValeur(req, "address"))
+					.set("city", getValeur(req, "city"))
+					.set("cp", Integer.parseInt(cp))
+					.set("date", date);
+			
+			ds.update(query, ops);
 		}
 	}
 
