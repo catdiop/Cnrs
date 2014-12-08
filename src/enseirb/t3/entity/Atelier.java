@@ -10,6 +10,7 @@ import javax.persistence.Lob;
 import org.bson.types.ObjectId;
 
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Transient;
 
 /**
  * @author catdiop
@@ -25,6 +26,7 @@ public class Atelier {
 	private int cp;
 	private String city;
 	private Date date;
+	@Transient private String idString;
 	
 	public ObjectId getId() {
 		return id;
@@ -80,5 +82,14 @@ public class Atelier {
 	}
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	public String getIdString() {
+		if(id==null)
+		return null;
+		else
+			return id.toHexString();
+	}
+	public void setIdString(String str) {
+		this.idString = str;
 	}
 }

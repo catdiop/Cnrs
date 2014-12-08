@@ -3,6 +3,7 @@ package enseirb.t3.ressource;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -28,9 +29,9 @@ import enseirb.t3.entity.Atelier;
 @Path("ateliers")
 public class AtelierRessource {
 	@POST
-	public void create(@QueryParam("title") String title, @QueryParam("theme") String theme,
-			@QueryParam("labo") String labo, @QueryParam("address") String address,
-			@QueryParam("city") String city, @QueryParam("cp") String cpString) {
+	public void create(@FormParam("title") String title, @FormParam("theme") String theme,
+			@FormParam("labo") String labo, @FormParam("address") String address,
+			@FormParam("city") String city, @FormParam("cp") String cpString) {
 		
 		Atelier a=new Atelier();
 		a.setTitle(title);

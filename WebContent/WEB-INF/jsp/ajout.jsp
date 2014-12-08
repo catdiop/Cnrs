@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,20 +85,20 @@
 	<div class="container">
 
 		<%-- Formulaire d'ajout --%>
-		<form role="form" action="/Cnrs/atelier" method="POST">
-
+		<form role="form" action="/Cnrs/atelier" method="${empty atelier.idString ? 'POST' : 'PUT'}">
+			<span>${atelier.idString}</span>
+			<input type="hidden" value="${idString}" />
 			<div class="form-group">
 				<label for="date">Date</label> <span class="text-danger">*</span>
 				<div class="controls">
 					<div class="input-group">
 						<input id="date" name="date" type="text"
-							value="<c:out value="${atelier.date}"/>"
+							value="<fmt:formatDate value="${atelier.date}" pattern="dd/MM/yyyy" />"
 							class="datepicker form-control"> <label for="date"
 							class="input-group-addon btn"> <span
 							class="glyphicon glyphicon-calendar"></span>
 						</label>
 					</div>
-
 				</div>
 				<span class="text-danger"><c:out
 						value="${erreurs['erreurDate']}" /></span>

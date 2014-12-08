@@ -12,7 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.bson.types.ObjectId;
+
 import com.google.code.morphia.Datastore;
+import com.google.code.morphia.query.Query;
+import com.google.code.morphia.query.UpdateOperations;
 
 import enseirb.t3.entity.Atelier;
 
@@ -26,16 +30,15 @@ public class AtelierServlet extends HttpServlet {
 	private void initThemes(){
 		themes=new HashMap<String,String>();
 
-		themes.put("Mathématiques", "Mathématiques");
 		themes.put("Chimie", "Chimie");
 		themes.put("Economie", "Economie");
-		themes.put("Géographie", "Géographie");
+		themes.put("Geographie", "Geographie");
 		themes.put("Histoire", "Histoire");
 		themes.put("Philosophie", "Philosophie");
 		themes.put("Physique", "Physique");
 		themes.put("Technologies", "Technologies");
-		themes.put("Mathématiques", "Mathématiques");
-		themes.put("Sciences numériques", "Sciences numériques");
+		themes.put("Mathematiques", "Mathematiques");
+		themes.put("Sciences numeriques", "Sciences numeriques");
 		themes.put("Science de la terre", "Science de la terre");
 		themes.put("Science de la vie", "Science de la vie");
 
@@ -51,14 +54,19 @@ public class AtelierServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		idString=req.getParameter(idString);
+		Atelier atelier=null;
+		idString=req.getParameter("idString");
 		initThemes();
 		if(idString==null){
-			Atelier atelier=new Atelier();
-			req.setAttribute("atelier", atelier);
-			req.setAttribute("themes", this.themes);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ajout.jsp").forward(req, resp);
+			atelier=new Atelier();	
 		}
+		else{
+			Datastore ds=ConnectToDatabase.connect();
+			atelier=ds.get(Atelier.class, new ObjectId(idString));
+		}
+		req.setAttribute("atelier", atelier);
+		req.setAttribute("themes", this.themes);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ajout.jsp").forward(req, resp);
 	}
 
 	@Override
@@ -93,8 +101,8 @@ public class AtelierServlet extends HttpServlet {
 			atelier.setAddress(address);
 			atelier.setCity(city);
 			atelier.setCp(Integer.parseInt(cp));
-		    atelier.setTheme(theme);
-			
+			atelier.setTheme(theme);
+
 			try{
 				date=sdf.parse(dateString);
 			}catch(ParseException e){}
@@ -118,7 +126,7 @@ public class AtelierServlet extends HttpServlet {
 		Date date=null;
 
 		if(dateString==null || dateString.isEmpty()) {
-			erreurs.put("erreurDate", "La date de l'atelier n'a pas été spéficiée.");
+			erreurs.put("erreurDate", "La date de l'atelier n'a pas ete speficiee.");
 		}
 
 		else {
@@ -126,37 +134,37 @@ public class AtelierServlet extends HttpServlet {
 			try{
 				date=sdf.parse(dateString);
 			}catch(ParseException e){
-				erreurs.put("erreurDate", "La date de l'atelier n'est pas spécifiée sous le bon format.");
+				erreurs.put("erreurDate", "La date de l'atelier n'est pas specifiee sous le bon format.");
 				return erreurs;
 			}
 		}
 
 		if(title==null || title.isEmpty()) {
-			erreurs.put("erreurTitle", "Le titre de l'atelier n'a pas été spéficié.");
+			erreurs.put("erreurTitle", "Le titre de l'atelier n'a pas ete speficie.");
 		}
-		
+
 		if(theme==null || theme.isEmpty()) {
-			erreurs.put("erreurTheme", "Le théme de l'atelier n'a pas été spéficié.");
+			erreurs.put("erreurTheme", "Le theme de l'atelier n'a pas ete speficie.");
 		}
 
 		if(labo==null || labo.isEmpty()) {
-			erreurs.put("erreurLabo", "Le laboratoire n'a pas été spéficié.");
+			erreurs.put("erreurLabo", "Le laboratoire n'a pas ete speficie.");
 		}
 
 		if(description==null || description.isEmpty()) {
-			erreurs.put("erreurDescription", "La description de l'atelier n'a pas été spéficiée.");
+			erreurs.put("erreurDescription", "La description de l'atelier n'a pas ete speficiee.");
 		}
 
 		if(address==null || address.isEmpty()) {
-			erreurs.put("erreurAddress", "L'adresse n'a pas été spéficiée.");
+			erreurs.put("erreurAddress", "L'adresse n'a pas ete speficiee.");
 		}
 
 		if(city==null || city.isEmpty()) {
-			erreurs.put("erreurCity", "La ville n'a pas été spéficiée.");
+			erreurs.put("erreurCity", "La ville n'a pas ete speficiee.");
 		}
 
 		if(cp==null || cp.isEmpty()) {
-			erreurs.put("erreurCp", "Le code postal n'a pas été spéficié.");
+			erreurs.put("erreurCp", "Le code postal n'a pas ete speficie.");
 		}
 
 		return erreurs;
@@ -164,8 +172,42 @@ public class AtelierServlet extends HttpServlet {
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPut(req, resp);
+		Atelier atelier=null;
+		Date date=null;
+
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/mm/yyyy");
+
+		Datastore ds=ConnectToDatabase.connect();
+		atelier=ds.get(Atelier.class, new ObjectId(idString));
+
+		erreurs=validation(req);
+		if(!erreurs.isEmpty()) {
+			req.setAttribute("idString", this.idString);
+			req.setAttribute("atelier", atelier);
+			req.setAttribute("themes", this.themes);
+			req.setAttribute("erreurs", erreurs);	
+			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ajout.jsp").forward(req, resp);
+		}
+		String cp=getValeur(req, "cp");
+		String dateString=getValeur(req, "date"); 
+
+		try{
+			date=sdf.parse(dateString);
+		}catch(ParseException e){}
+
+		Query<Atelier> query=ds.createQuery(Atelier.class).field("id").equal(new ObjectId(idString));
+
+		UpdateOperations<Atelier> ops = ds.createUpdateOperations(Atelier.class)
+				.set("title", getValeur(req, "title"))
+				.set("theme", getValeur(req, "theme"))
+				.set("labo", getValeur(req, "labo"))
+				.set("description", getValeur(req, "description"))
+				.set("address", getValeur(req, "address"))
+				.set("city", getValeur(req, "city"))
+				.set("cp", Integer.parseInt(cp))
+				.set("date", date);
+		
+		ds.update(query, ops);
 	}
 
 	public String getIdString() {
