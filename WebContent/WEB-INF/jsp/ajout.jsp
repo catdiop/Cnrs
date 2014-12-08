@@ -87,8 +87,8 @@
 		<%-- Formulaire d'ajout --%>
 		<form role="form" action="/Cnrs/atelier" method="POST">
 			<input type="hidden" value="${idString}" />
-			<div class="form-group">
-				<label for="date">Date</label> <span class="text-danger">*</span>
+			<div class="form-group" style="width:300px;">
+				<label for="date" >Date</label> <span class="text-danger">*</span>
 				<div class="controls">
 					<div class="input-group">
 						<input id="date" name="date" type="text"

@@ -94,10 +94,13 @@
 						<a href="${modify}" class="btn btn-default btn-lg"> <span
 							class="glyphicon glyphicon-pencil"></span> Modifier
 						</a>
-
-						<button type="button" class="btn btn-primary">
-							<span class="glyphicon glyphicon-eye-open"></span> Voir
-						</button>
+						<c:url value="/atelier" var="voir">
+							<c:param name="idString">${atelier.idString}</c:param>
+							<c:param name="voir">voir</c:param>
+						</c:url>
+						<a href="${voir}" class="btn btn-primary"> <span
+							class="glyphicon glyphicon-eye-open"></span> Voir
+						</a>
 					</div>
 
 					<div class="clearfix"></div>
