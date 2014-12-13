@@ -91,7 +91,7 @@
 						<c:url value="/atelier" var="modify">
 							<c:param name="idString">${atelier.idString}</c:param>
 						</c:url>
-						<a href="${modify}" class="btn btn-default btn-lg"> <span
+						<a href="${modify}" class="btn btn-default"> <span
 							class="glyphicon glyphicon-pencil"></span> Modifier
 						</a>
 						<c:url value="/atelier" var="voir">
@@ -100,6 +100,14 @@
 						</c:url>
 						<a href="${voir}" class="btn btn-primary"> <span
 							class="glyphicon glyphicon-eye-open"></span> Voir
+						</a>
+						<c:url value="/atelier" var="delete">
+							<c:param name="idString">${atelier.idString}</c:param>
+							<c:param name="delete">delete</c:param>
+						</c:url>
+						<input name="idString" type="hidden" value="${atelier.idString}" />
+						<a href="${delete}" class="btn btn-danger"> <span
+							class="glyphicon glyphicon-remove"></span> Supprimer
 						</a>
 					</div>
 

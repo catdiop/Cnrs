@@ -87,11 +87,12 @@
 					<br>
 					<p><c:out value="${atelier.labo}" /> : <c:out value="${atelier.address}" /> - <c:out value="${atelier.cp}" /> - <c:out value="${atelier.city}" /></p>
 					<br> <br>
-					<h3>Theme</h3>
+					<h3><c:out value="${atelier.theme}" /> </h3>
 					<article><c:out value="${atelier.description}" /></article>
 					<br> <br>
 					<p>
-						Les dates: <br><c:out value="<fmt:formatDate value="${atelier.date}" pattern="dd/MM/yyyy" />" /><br> 
+					 Les dates: <br><fmt:formatDate value="${atelier.date}" pattern="dd/MM/yyyy" /><br> 
+					
 					</p>
 
 

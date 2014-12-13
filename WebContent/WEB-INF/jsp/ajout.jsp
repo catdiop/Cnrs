@@ -86,7 +86,7 @@
 
 		<%-- Formulaire d'ajout --%>
 		<form role="form" action="/Cnrs/atelier" method="POST">
-			<input type="hidden" value="${idString}" />
+			<input name="idString" type="hidden" value="${atelier.idString}" />
 			<div class="form-group" style="width:300px;">
 				<label for="date" >Date</label> <span class="text-danger">*</span>
 				<div class="controls">
@@ -157,7 +157,7 @@
 			<div class="form-group">
 				<label for="description">Description</label>
 				<textarea name="description" rows="5"
-					class="form-control placeholder="Description" value="<c:out value="${atelier.description}"/>"></textarea>
+					class="form-control placeholder="Description"><c:out value="${atelier.description}"/></textarea>
 				<br> <span class="text-danger"><c:out
 						value="${erreurs['erreurDescription']}" /></span>
 			</div>

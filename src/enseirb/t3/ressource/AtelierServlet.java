@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -47,8 +48,6 @@ public class AtelierServlet extends HttpServlet {
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doDelete(req, resp);
 	}
 
 	@Override
@@ -57,18 +56,32 @@ public class AtelierServlet extends HttpServlet {
 		Atelier atelier=null;
 		String voir=req.getParameter("voir");
 		idString=req.getParameter("idString");
+		Datastore ds=ConnectToDatabase.connect();
 		initThemes();
+		
+		if(getValeur(req, "delete")!=null && getValeur(req, "delete").equals("delete")){
+			Query<Atelier> qAtelier=ds.createQuery(Atelier.class).field("id").equal(new ObjectId(getValeur(req, "idString")));
+			ds.delete(qAtelier);
+			
+			//retour à la liste
+			Query<Atelier> q=ds.createQuery(Atelier.class);
+			List<Atelier> ateliers=q.asList();
+			req.setAttribute("ateliers", ateliers);
+			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ateliers.jsp").forward(req, resp);
+			return;
+		}
+		
 		if(idString==null){
 			atelier=new Atelier();	
 		}
 		else{
-			Datastore ds=ConnectToDatabase.connect();
-			atelier=ds.get(Atelier.class, new ObjectId(idString));
 			
+			atelier=ds.get(Atelier.class, new ObjectId(idString));
+
 		}
 		req.setAttribute("atelier", atelier);
 		req.setAttribute("themes", this.themes);
-		if( voir==null)
+		if(voir==null)
 			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ajout.jsp").forward(req, resp);
 		else
 			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ateliers1.jsp").forward(req, resp);
@@ -78,7 +91,7 @@ public class AtelierServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		String title=null;
 		String labo=null;
 		String description=null;
@@ -88,10 +101,10 @@ public class AtelierServlet extends HttpServlet {
 		String dateString=null; 
 		String theme=null;
 		Date date=null;
-		
+
 		Datastore ds=ConnectToDatabase.connect();
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/mm/yyyy");
-		
+
 		erreurs=validation(req);
 		if(erreurs.isEmpty()){
 			title=getValeur(req, "title");
@@ -106,7 +119,7 @@ public class AtelierServlet extends HttpServlet {
 				date=sdf.parse(dateString);
 			}catch(ParseException e){}
 		}
-		
+
 		if(!erreurs.isEmpty()) {
 			Atelier atelier=new Atelier();
 			req.setAttribute("atelier", atelier);
@@ -114,35 +127,53 @@ public class AtelierServlet extends HttpServlet {
 			req.setAttribute("erreurs", erreurs);	
 			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ajout.jsp").forward(req, resp);
 		}
-		
-		else if(getValeur(req, "idString")==null){
-			Atelier atelier=new Atelier();
-			atelier.setTitle(title);
-			atelier.setLabo(labo);
-			atelier.setDescription(description);
-			atelier.setAddress(address);
-			atelier.setCity(city);
-			atelier.setCp(Integer.parseInt(cp));
-			atelier.setTheme(theme);
-			atelier.setDate(date);
-			
-			ds.save(atelier);
-		}else{
-			Query<Atelier> query=ds.createQuery(Atelier.class).field("id").equal(new ObjectId(idString));
 
-			UpdateOperations<Atelier> ops = ds.createUpdateOperations(Atelier.class)
-					.set("title", getValeur(req, "title"))
-					.set("theme", getValeur(req, "theme"))
-					.set("labo", getValeur(req, "labo"))
-					.set("description", getValeur(req, "description"))
-					.set("address", getValeur(req, "address"))
-					.set("city", getValeur(req, "city"))
-					.set("cp", Integer.parseInt(cp))
-					.set("date", date);
-			
-			ds.update(query, ops);
+		if(getValeur(req, "delete")==null || getValeur(req, "delete").isEmpty()){
+			if(getValeur(req, "idString")==null){
+				Atelier atelier=new Atelier();
+				atelier.setTitle(title);
+				atelier.setLabo(labo);
+				atelier.setDescription(description);
+				atelier.setAddress(address);
+				atelier.setCity(city);
+				atelier.setCp(Integer.parseInt(cp));
+				atelier.setTheme(theme);
+				atelier.setDate(date);
+
+				ds.save(atelier);
+				
+				//retour à la liste
+				Query<Atelier> q=ds.createQuery(Atelier.class);
+				List<Atelier> ateliers=q.asList();
+				req.setAttribute("ateliers", ateliers);
+				this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ateliers.jsp").forward(req, resp);
+				return;
+			}else{
+				String str=getValeur(req, "idString");
+				Query<Atelier> query=ds.createQuery(Atelier.class).field("id").equal(new ObjectId(str));
+
+				UpdateOperations<Atelier> ops = ds.createUpdateOperations(Atelier.class)
+						.set("title", getValeur(req, "title"))
+						.set("theme", getValeur(req, "theme"))
+						.set("labo", getValeur(req, "labo"))
+						.set("description", getValeur(req, "description"))
+						.set("address", getValeur(req, "address"))
+						.set("city", getValeur(req, "city"))
+						.set("cp", Integer.parseInt(cp))
+						.set("date", date);
+
+				ds.update(query, ops);
+				
+				//retour à la liste
+				Query<Atelier> q=ds.createQuery(Atelier.class);
+				List<Atelier> ateliers=q.asList();
+				req.setAttribute("ateliers", ateliers);
+				this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ateliers.jsp").forward(req, resp);
+				return;
+			}
 		}
 	}
+
 
 	public Map<String, String> validation(HttpServletRequest req) {
 		Map<String,String> erreurs=new HashMap<String,String>();
@@ -199,46 +230,6 @@ public class AtelierServlet extends HttpServlet {
 		}
 
 		return erreurs;
-	}
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		Atelier atelier=null;
-		Date date=null;
-
-		SimpleDateFormat sdf=new SimpleDateFormat("dd/mm/yyyy");
-
-		Datastore ds=ConnectToDatabase.connect();
-		atelier=ds.get(Atelier.class, new ObjectId(idString));
-
-		erreurs=validation(req);
-		if(!erreurs.isEmpty()) {
-			req.setAttribute("idString", this.idString);
-			req.setAttribute("atelier", atelier);
-			req.setAttribute("themes", this.themes);
-			req.setAttribute("erreurs", erreurs);	
-			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/ajout.jsp").forward(req, resp);
-		}
-		String cp=getValeur(req, "cp");
-		String dateString=getValeur(req, "date"); 
-
-		try{
-			date=sdf.parse(dateString);
-		}catch(ParseException e){}
-
-		Query<Atelier> query=ds.createQuery(Atelier.class).field("id").equal(new ObjectId(idString));
-
-		UpdateOperations<Atelier> ops = ds.createUpdateOperations(Atelier.class)
-				.set("title", getValeur(req, "title"))
-				.set("theme", getValeur(req, "theme"))
-				.set("labo", getValeur(req, "labo"))
-				.set("description", getValeur(req, "description"))
-				.set("address", getValeur(req, "address"))
-				.set("city", getValeur(req, "city"))
-				.set("cp", Integer.parseInt(cp))
-				.set("date", date);
-		
-		ds.update(query, ops);
 	}
 
 	public String getIdString() {
